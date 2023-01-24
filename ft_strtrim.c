@@ -21,11 +21,10 @@ char	*ft_strtrim(char const *s1, char const *set)
 	i = ft_strlen(s1);
 	while (s1[n] && ft_strchr(set, s1[n]))
 		n++;
-	while (s1[i - 1] && ft_strchr(set, s1[i - 1]) && i > n)
+	while (ft_strchr(set, s1[i - 1]) && i > n)
 		i--;
-	newstr = malloc(sizeof(newstr) * (i - n + 1));
+	newstr = ft_substr(s1, n, i - n);
 	if (!newstr)
 		return (NULL);
-	ft_strlcpy(newstr, s1 + n, i - n + 1);
 	return (newstr);
 }
