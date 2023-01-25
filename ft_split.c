@@ -43,55 +43,28 @@ static int	charcount(char const *s, char c)
 	return (n);
 }
 
-static char	**ft_fill(char const *s, char **str, char c)
-{
-	int		n;
-	int		j;
-	int		k;
-
-	n = 0;
-	j = 0;
-	while (s[n])
-	{
-		if (s[n] != c && (n == 0 || s[n - 1] == c))
-		{
-			k = 0;
-			while (s[n] != c && s[n])
-			{
-				str[j][k] = s[n];
-				n++;
-				k++;
-			}
-			j++;
-		}
-		n++;
-	}
-	return (str);
-}
-
 char	**ft_split(char const *s, char c)
 {
+	int		word;
 	char	**str;
 	int		n;
-	int		j;
+	int		count;
 
 	n = 0;
-	j = 0;
-	str = (char **)malloc(sizeof(str) * (wordcount(s, c) + 1));
+	count = 0;
+	word = wordcount(s, c);
+	str = malloc(sizeof(*str) * (word + 1));
 	if (!str)
-		return (NULL);
-	str[wordcount(s, c)] = 0;
-	while (s[n])
+		return (0);
+	str[word] = 0;
+	while (count < word)
 	{
-		if (s[n] != c && (n == 0 || s[n - 1] == c))
-		{
-			str[j] = (char *)malloc(sizeof(char) * (charcount(s + n, c) + 1));
-			if (!str[j])
-				return (NULL);
-			str[j][charcount(s + n, c)] = 0;
-			j++;
-		}
-		n++;
+		while (s[n] && s[n] == c)
+			n++;
+		str[count] = ft_substr(s + n, 0, charcount(s + n, c));
+		while (s[n] && s[n] != c)
+			n++;
+		count++;
 	}
-	return (ft_fill(s, str, c));
+	return (str);
 }
